@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class AuthController {
-	//TEST branch
+	
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 

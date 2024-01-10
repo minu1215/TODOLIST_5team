@@ -9,10 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.team5_project.model.ERole;
 import com.example.team5_project.model.Role;
-import com.example.team5_project.model.RoleRepository;
 import com.example.team5_project.model.User;
 import com.example.team5_project.model.UserDto;
-import com.example.team5_project.model.UserRepository;
+import com.example.team5_project.repository.RoleRepository;
+import com.example.team5_project.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.example.team5_project.model.User;
-import com.example.team5_project.model.UserRepository;
+import com.example.team5_project.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
