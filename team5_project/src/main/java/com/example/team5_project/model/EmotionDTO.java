@@ -14,7 +14,8 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDTO {
+public class EmotionDTO {
 
-	private String projectName;
+	private String name;
+	private Long listId;
 }

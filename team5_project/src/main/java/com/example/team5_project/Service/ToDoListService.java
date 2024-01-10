@@ -27,21 +27,20 @@ public class ToDoListService {
     @Transactional
     public ToDoList createList(ToDoListDTO toDoListDTO, Optional<User> user) {
 
-        System.out.println(toDoListDTO.getCategory());
     	CategoryName categoryName = CategoryName.builder()
     									.categoryName(toDoListDTO.getCategory())
     									.id(categoryNameRepository.findByCategoryName(toDoListDTO.getCategory()).get().getId())
     									.build();
     	Long parentId = toDoListRepository.getById(toDoListDTO.getParentId()).getId();
     	ToDoList toDoList = ToDoList.builder()
-    							.parentId(toDoListDTO.getParentId() != null ? parentId : null)
+    							.parentId(toDoListDTO.getParentId())
     							.listName(toDoListDTO.getListName())
     							.listDesc(toDoListDTO.getListDesc())
     							.createDate(new Date())
     							.endDate(toDoListDTO.getEndDate())
     							.isCommpleted(false)
     							.level(toDoListDTO.getLevel())
-    							.likeCount(new Integer(0))
+    							.likeCount(0)
     							.user(user.get())
     							.project(null)
     							.categoryName(categoryName)

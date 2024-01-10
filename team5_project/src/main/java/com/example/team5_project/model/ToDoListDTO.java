@@ -23,7 +23,7 @@ public class ToDoListDTO {
 
     private String listDesc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date endDate;
     
     private Boolean isCommpleted;

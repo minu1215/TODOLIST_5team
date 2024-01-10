@@ -14,7 +14,8 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectDTO {
+public class ReplyDTO {
 
-	private String projectName;
+	private Long listId;
+	private String content;
 }
