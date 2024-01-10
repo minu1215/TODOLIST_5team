@@ -36,6 +36,9 @@ public class ToDoList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
     @Column(name = "list_id")
     private Long id;
+    
+    @Column(name = "parent_id")
+    private Long parentId;
 
     @NotBlank
     @Size(max = 100)
@@ -46,32 +49,27 @@ public class ToDoList {
     @Column(name = "listDesc")
     private String listDesc;
 
-    @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createDate")
     private Date createDate;
     
-    @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "endDate")
     private Date endDate;
     
-    @NotBlank
     @Column(name = "isCompleted")
     private Boolean isCommpleted;
     
-    @NotBlank
     @Column(name = "level")
     private Integer level; 
     
-    @NotBlank
     @Column(name = "likeCount")
     private Integer likeCount;
     
-    @NotBlank
-    @Size(max = 20)
-    @Column(name = "category")
-    private String category;
+//    @NotBlank
+//    @Size(max = 20)
+//    @Column(name = "category")
+//    private String category;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
