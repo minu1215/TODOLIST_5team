@@ -82,12 +82,12 @@ public class ToDoList {
     private Project project;
     
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "categoryname_id")
     private CategoryName categoryName;
     
     @ManyToOne
-    @JoinColumn(name = "like_id")
-    private LikeUser like;
+    @JoinColumn(name = "likeuser_id")
+    private LikeUser likeUser;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "TODOLIST_REPLY",

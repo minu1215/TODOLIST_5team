@@ -21,7 +21,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "TODOLIST")
+@Table(name = "PROJECT")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

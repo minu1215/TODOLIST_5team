@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class LikeUser {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "list_id")
+	@Column(name = "likeuser_id")
 	private Long id;
 	
     @ManyToOne

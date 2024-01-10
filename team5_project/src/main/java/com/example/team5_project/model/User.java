@@ -3,7 +3,7 @@ package com.example.team5_project.model;
 import java.util.HashSet;
 import java.util.Set;
 
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +37,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  
+    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @Column(name = "user_id")
     private Long id;
 
     @NotBlank	// jakarta.validation.constraints.NotBlank

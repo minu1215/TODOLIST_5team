@@ -15,7 +15,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "LIKEUSER")
+@Table(name = "CATEGORYNAME")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 public class CategoryName {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "list_id")
+	@Column(name = "categoryname_id")
 	private Long id;
 	
     @NotBlank

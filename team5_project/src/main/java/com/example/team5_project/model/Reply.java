@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class Reply {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
-    @Column(name = "list_id")
+    @Column(name = "reply_id")
     private Long id;
 	
     @NotBlank

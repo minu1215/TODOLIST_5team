@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class Emotion {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  
-    @Column(name = "emmotion_id")
+    @Column(name = "emotion_id")
     private Long id;
 	
     @NotBlank
