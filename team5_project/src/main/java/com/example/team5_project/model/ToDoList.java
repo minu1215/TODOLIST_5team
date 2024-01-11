@@ -63,8 +63,8 @@ public class ToDoList {
     @Column(name = "level")
     private Integer level; 
     
-    @Column(name = "likeCount")
-    private Integer likeCount;
+//    @Column(name = "likeCount")
+//    private Integer likeCount;
     
 //    @NotBlank
 //    @Size(max = 20)
@@ -82,20 +82,10 @@ public class ToDoList {
     @ManyToOne
     @JoinColumn(name = "categoryname_id")
     private CategoryName categoryName;
-    
-    @ManyToOne
-    @JoinColumn(name = "likeuser_id")
-    private LikeUser likeUser;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TODOLIST_REPLY",
+    @JoinTable(name = "LIKEUSER",
             joinColumns = @JoinColumn(name = "list_id"),
-            inverseJoinColumns = @JoinColumn(name = "reply_id"))
-    private Set<Reply> replys = new HashSet<>();
-    
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "TODOLIST_EMOTION",
-            joinColumns = @JoinColumn(name = "list_id"),
-            inverseJoinColumns = @JoinColumn(name = "emotion_id"))
-    private Set<Emotion> emotions = new HashSet<>();
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> likeUsers = new HashSet<>();
 }

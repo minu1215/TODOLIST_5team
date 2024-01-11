@@ -8,10 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.team5_project.model.Emotion;
 import com.example.team5_project.model.EmotionDTO;
-import com.example.team5_project.model.Reply;
+import com.example.team5_project.model.EmotionUser;
+import com.example.team5_project.model.ListIdDTO;
 import com.example.team5_project.model.ToDoList;
 import com.example.team5_project.model.User;
 import com.example.team5_project.repository.EmotionRepository;
+import com.example.team5_project.repository.EmotionUserRepository;
 import com.example.team5_project.repository.ToDoListRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,37 +23,74 @@ import lombok.RequiredArgsConstructor;
 public class EmotionService {
 
 	private final EmotionRepository emotionRepository;
+	private final EmotionUserRepository emotionUserRepository;
+	
 	private final ToDoListRepository toDoListRepository;
 
 	@Transactional
-	public Emotion createEmotion(EmotionDTO emotionDTO, Optional<User> user) {
+	public Optional<EmotionUser> checkEmotion(EmotionDTO emotionDTO, Optional<User> user) {
 
-		if (emotionRepository.findByName(emotionDTO.getName()) == null) {
+		Emotion emotion = emotionRepository.findByName(emotionDTO.getName());
+		if (emotion == null) {
 			throw new RuntimeException("없는 감정표현입니다.");
 		}
-		Emotion emotion = Emotion.builder().name(emotionDTO.getName()).build();
-
+		
+		
 		Optional<ToDoList> todoList = toDoListRepository.findById(emotionDTO.getListId());
+
+		EmotionUser emotionUser = EmotionUser.builder()
+				.user(user.get())
+				.list(todoList.get())
+				.emotion(emotion)
+				.build();
 
 		if (todoList.get().getProject() != null) {
 			Set<User> users = todoList.get().getProject().getUsers();
-			boolean userNameExists = users.stream().anyMatch(u -> u.getId().equals(user.get().getId()));
-
-			if (!userNameExists) {
+			
+			if (!users.contains(user)) {
 				throw new RuntimeException("해당 이름의 사용자가 프로젝트에 속해있지 않습니다.");
 			}
+		} else {
+			if(todoList.get().getUser() != user.get()) {
+	    		throw new RuntimeException("일치하지 않는 유저입니다.");
+	    	}	    	
 		}
-    	emotionRepository.save(emotion);
+		
+		
+		System.out.println("test1");
+		Optional<EmotionUser> findEmotionUser = emotionUserRepository.findByListIdAndUserId(emotionDTO.getListId(), user.get().getId());
+		
+		System.out.println("test2");
+		if(findEmotionUser.isEmpty()) {
+			emotionUserRepository.save(emotionUser);			
+		} else if(findEmotionUser.get().getEmotion().getId() != emotion.getId()){
+			findEmotionUser.get().setEmotion(emotion);
+			emotionUserRepository.save(findEmotionUser.get());
+		} else {
+			emotionUserRepository.delete(findEmotionUser.get());
+		}
 
+		Optional<EmotionUser> result = emotionUserRepository.findByListIdAndUserId(emotionDTO.getListId(), user.get().getId());
+		return result.isPresent() ? result : null;
+	}
+	
+	@Transactional
+	public Optional<EmotionUser> readEmotion(Long listId, Optional<User> user){
+		Optional<ToDoList> todoList = toDoListRepository.findById(listId);
 
-    	Set<Emotion> emotions = todoList.get().getEmotions();
-    	emotions.add(emotion);
-    	
-    	todoList.get().setEmotions(emotions);
-
-    	toDoListRepository.save(todoList.get());
-  	
-		return emotion;
+		if (todoList.get().getProject() != null) {
+			Set<User> users = todoList.get().getProject().getUsers();
+			
+			if (!users.contains(user)) {
+				throw new RuntimeException("해당 이름의 사용자가 프로젝트에 속해있지 않습니다.");
+			}
+		} else {
+			if(todoList.get().getUser() != user.get()) {
+	    		throw new RuntimeException("일치하지 않는 유저입니다.");
+	    	}	    	
+		}
+		Optional<EmotionUser> result = emotionUserRepository.findByListId(listId);
+		return result.isPresent() ? result : null;
 	}
 
 }

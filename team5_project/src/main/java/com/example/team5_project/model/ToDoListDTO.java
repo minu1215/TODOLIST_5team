@@ -30,7 +30,5 @@ public class ToDoListDTO {
     
     private Integer level; 
     
-    private Integer likeCount;
-    
     private String category;
 }
