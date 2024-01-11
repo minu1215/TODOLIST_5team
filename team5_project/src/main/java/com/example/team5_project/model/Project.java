@@ -37,10 +37,10 @@ public class Project {
     @Column(name = "projectName")
     private String projectName;
 
-    @NotBlank
-    @Size(max = 100)
-    @Column(name = "email")
-    private String email;
+//    @NotBlank
+//    @Size(max = 100)
+//    @Column(name = "email")
+//    private String email;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "PROJECT_USER",

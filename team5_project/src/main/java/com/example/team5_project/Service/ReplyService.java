@@ -50,5 +50,42 @@ public class ReplyService {
   	
     	return replyRepository.save(reply);
     }
-
+    
+    @Transactional
+    public void deleteReply(Long replyId, Optional<User> user) {
+    	
+    	Optional<Reply> reply = replyRepository.findById(replyId);
+    	
+		if(reply.get().getUser().getId() != user.get().getId()) {
+	    		throw new RuntimeException("일치하지 않는 유저입니다.");
+		}
+		
+		replyRepository.deleteById(replyId);
+		
+    }
+    @Transactional
+    public Reply updateReply(Long replyId, ReplyDTO replyDTO, Optional<User> user) {
+    	Optional<Reply> reply = replyRepository.findById(replyId);
+    	
+		if(reply.get().getUser().getId() != user.get().getId()) {
+	    		throw new RuntimeException("일치하지 않는 유저입니다.");
+		}
+		
+		reply.get().setContent(replyDTO.getContent());
+		reply.get().setCreateDate(new Date());    	
+  	
+    	return replyRepository.save(reply.get());
+    }
+    
+    @Transactional
+    public Reply readReply(Long replyId, Optional<User> user) {
+    	Optional<Reply> reply = replyRepository.findById(replyId);
+    	
+		if(reply.get().getUser().getId() != user.get().getId()) {
+    		throw new RuntimeException("일치하지 않는 유저입니다.");
+		}
+		
+		return reply.get();
+    }
+    
 }

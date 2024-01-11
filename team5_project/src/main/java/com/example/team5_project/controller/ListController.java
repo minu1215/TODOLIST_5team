@@ -51,7 +51,7 @@ public class ListController {
     @GetMapping("/list/read/{listId}")
     @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<ToDoList> readList(@PathVariable Long listId) {
-        return ResponseEntity.ok(toDoListService.getList(listId, userService.getMyUserWithAuthorities()));
+        return ResponseEntity.ok(toDoListService.readList(listId, userService.getMyUserWithAuthorities()));
     }
 
 }

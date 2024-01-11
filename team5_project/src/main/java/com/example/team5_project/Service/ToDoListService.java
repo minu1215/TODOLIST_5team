@@ -111,7 +111,7 @@ public class ToDoListService {
     }
 
     @Transactional(readOnly = true)
-    public ToDoList getList(Long listId, Optional<User> user) {
+    public ToDoList readList(Long listId, Optional<User> user) {
        	Optional<ToDoList> toDoList = toDoListRepository.findById(listId);
 
     	if(toDoList.isEmpty()) {
