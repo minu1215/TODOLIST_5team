@@ -27,14 +27,14 @@ public class EmotionController {
 		
 	@PostMapping("/emotion/check")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<Optional<EmotionUser>> createProject(@RequestBody EmotionDTO emotionDTO) {
+	public ResponseEntity<Optional<EmotionUser>> checkEmotion(@RequestBody EmotionDTO emotionDTO) {
 				
 		return ResponseEntity.ok(emotionService.checkEmotion(emotionDTO, userService.getMyUserWithAuthorities()));
 	}
 	
 	@GetMapping("/emotion/check/{listId}")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<Optional<EmotionUser>> createProject(@PathVariable Long listId) {
+	public ResponseEntity<Optional<EmotionUser>> checkEmotion(@PathVariable Long listId) {
 				
 		return ResponseEntity.ok(emotionService.readEmotion(listId, userService.getMyUserWithAuthorities()));
 	}

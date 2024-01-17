@@ -1,5 +1,6 @@
 package com.example.team5_project.security;
 
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -38,7 +39,7 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
-
+                
                 // enable h2-console
                 .and()
                 .headers()
@@ -50,17 +51,35 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
+//                .and()
+//                .logout()
+//                    .logoutUrl("/logout")
+//                    .logoutSuccessUrl("/login") // 로그아웃 후에 이동할 URL을 지정합니다.
+//                    .permitAll()
+                    
                 .and()
                 .authorizeHttpRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다.
                 .requestMatchers("/api/authenticate").permitAll() // 로그인 api
                 .requestMatchers("/api/signup").permitAll() // 회원가입 api
                 .requestMatchers("/favicon.ico").permitAll()
+//                .requestMatchers("/resources/**").permitAll()
+                .requestMatchers("/js/**").permitAll()
+                .requestMatchers("/css/**").permitAll()
+                .requestMatchers("/resources/**").permitAll()
+                .requestMatchers("/layout/**").permitAll()
+                .requestMatchers("/fragment/**").permitAll()
+                .requestMatchers("/bootstrap/**").permitAll()
+                
+                .requestMatchers("/signup").permitAll()
+                .requestMatchers("/login").permitAll()
+                .requestMatchers("/user/logout").permitAll()                
                 .anyRequest().authenticated() // 그 외 인증 없이 접근X
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider)); // JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig class 적용
 
+
         return httpSecurity.build();
     }
-
+  
 }

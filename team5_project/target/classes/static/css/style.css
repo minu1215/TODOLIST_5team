@@ -1,0 +1,16 @@
+
+body{
+	background-color : skyblue;
+}
+
+#addList {
+		display: none;
+}
+
+#editList {
+		display: none;
+}
+
+#addReply {
+		display: none;
+}

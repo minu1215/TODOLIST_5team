@@ -27,28 +27,28 @@ public class ReplyController {
 		
 	@PostMapping("/reply/create")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<Reply> createProject(@RequestBody ReplyDTO replyDTO) {
+	public ResponseEntity<Reply> createReply(@RequestBody ReplyDTO replyDTO) {
 				
 		return ResponseEntity.ok(replyService.createReply(replyDTO, userService.getMyUserWithAuthorities()));
 	}
 	
 	@DeleteMapping("/reply/delete/{replyId}")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<String> deleteProject(@PathVariable Long replyId) {
+	public ResponseEntity<String> deleteReply(@PathVariable Long replyId) {
 		replyService.deleteReply(replyId, userService.getMyUserWithAuthorities());
 		return ResponseEntity.ok(new String("delete reply"));
 	}
 	
 	@PutMapping("/reply/update/{replyId}")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<Reply> updateProject(@PathVariable Long replyId, @RequestBody ReplyDTO replyDTO) {
+	public ResponseEntity<Reply> updateReply(@PathVariable Long replyId, @RequestBody ReplyDTO replyDTO) {
 				
 		return ResponseEntity.ok(replyService.updateReply(replyId, replyDTO, userService.getMyUserWithAuthorities()));
 	}
 	
 	@GetMapping("/reply/read/{replyId}")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<Reply> readProject(@PathVariable Long replyId) {
+	public ResponseEntity<Reply> readReply(@PathVariable Long replyId) {
 				
 		return ResponseEntity.ok(replyService.readReply(replyId, userService.getMyUserWithAuthorities()));
 	}

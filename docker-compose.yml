@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  mariadb-container:
+    container_name: proj-db-1
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: "maria"
+      MYSQL_DATABASE: team5_project
+      MYSQL_CHARSET: utf8mb4
+    ports:
+      - "3306:3306"
+ 
+
+  spring-boot-app:
+    image: kaz1301/team5_project-spring-boot-app
+    depends_on:
+      - mariadb-container
+    ports:
+      - "8080:8080"

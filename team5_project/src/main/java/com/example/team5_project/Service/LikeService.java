@@ -27,17 +27,6 @@ public class LikeService {
 
 		Optional<ToDoList> todoList = toDoListRepository.findById(listId);
 
-		if (todoList.get().getProject() != null) {
-			Set<User> users = todoList.get().getProject().getUsers();
-
-			if (!users.contains(user)) {
-				throw new RuntimeException("해당 이름의 사용자가 프로젝트에 속해있지 않습니다.");
-			}
-		} else {
-			if (todoList.get().getUser() != user.get()) {
-				throw new RuntimeException("일치하지 않는 유저입니다.");
-			}
-		}
 
 		Set<User> likeUsers = todoList.get().getLikeUsers();
 		if (likeUsers.contains(user.get())) {
@@ -51,24 +40,36 @@ public class LikeService {
 
 		return toDoListRepository.save(todoList.get());
 	}
+	
+	@Transactional
+	public void checkReplyLike(Long replyId, Optional<User> user) {
+
+		Optional<Reply> reply = replyRepository.findById(replyId);
+		ToDoList todoList = reply.get().getList();
+
+
+		Set<User> likeUsers = reply.get().getLikeUsers();
+		if (likeUsers.contains(user.get())) {
+			likeUsers.remove(user.get());
+		} else {
+			likeUsers.add(user.get());
+		}
+		reply.get().setLikeUsers(likeUsers);
+
+		replyRepository.save(reply.get());
+	}
 
 	@Transactional
 	public Set<User> readLike(Long listId, Optional<User> user) {
-		Optional<ToDoList> todoList = toDoListRepository.findById(listId);
-
-		if (todoList.get().getProject() != null) {
-			Set<User> users = todoList.get().getProject().getUsers();
-
-			if (!users.contains(user)) {
-				throw new RuntimeException("해당 이름의 사용자가 프로젝트에 속해있지 않습니다.");
-			}
-		} else {
-			if (todoList.get().getUser() != user.get()) {
-				throw new RuntimeException("일치하지 않는 유저입니다.");
-			}
-		}
+		
 		
 		return toDoListRepository.findById(listId).get().getLikeUsers();
+	}
+	
+	@Transactional
+	public Set<User> readReplyLike(Long replyId, Optional<User> user) {
+	
+		return replyRepository.findById(replyId).get().getLikeUsers();
 
 	}
 }

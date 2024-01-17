@@ -13,4 +13,6 @@ public interface EmotionUserRepository extends JpaRepository<EmotionUser, Long> 
 
 	Optional<EmotionUser> findByListId(Long listId);
 
+	Set<EmotionUser> findAllByListId(Long listId);
+
 }

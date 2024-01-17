@@ -8,12 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.team5_project.model.Emotion;
 import com.example.team5_project.model.EmotionDTO;
+import com.example.team5_project.model.EmotionReply;
 import com.example.team5_project.model.EmotionUser;
-import com.example.team5_project.model.ListIdDTO;
+import com.example.team5_project.model.Reply;
 import com.example.team5_project.model.ToDoList;
 import com.example.team5_project.model.User;
+import com.example.team5_project.repository.EmotionReplyRepository;
 import com.example.team5_project.repository.EmotionRepository;
 import com.example.team5_project.repository.EmotionUserRepository;
+import com.example.team5_project.repository.ReplyRepository;
 import com.example.team5_project.repository.ToDoListRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,8 +27,9 @@ public class EmotionService {
 
 	private final EmotionRepository emotionRepository;
 	private final EmotionUserRepository emotionUserRepository;
-	
+	private final EmotionReplyRepository emotionReplyRepository;
 	private final ToDoListRepository toDoListRepository;
+	private final ReplyRepository replyRepository;
 
 	@Transactional
 	public Optional<EmotionUser> checkEmotion(EmotionDTO emotionDTO, Optional<User> user) {
@@ -44,23 +48,9 @@ public class EmotionService {
 				.emotion(emotion)
 				.build();
 
-		if (todoList.get().getProject() != null) {
-			Set<User> users = todoList.get().getProject().getUsers();
-			
-			if (!users.contains(user)) {
-				throw new RuntimeException("해당 이름의 사용자가 프로젝트에 속해있지 않습니다.");
-			}
-		} else {
-			if(todoList.get().getUser() != user.get()) {
-	    		throw new RuntimeException("일치하지 않는 유저입니다.");
-	    	}	    	
-		}
-		
-		
-		System.out.println("test1");
+	
 		Optional<EmotionUser> findEmotionUser = emotionUserRepository.findByListIdAndUserId(emotionDTO.getListId(), user.get().getId());
 		
-		System.out.println("test2");
 		if(findEmotionUser.isEmpty()) {
 			emotionUserRepository.save(emotionUser);			
 		} else if(findEmotionUser.get().getEmotion().getId() != emotion.getId()){
@@ -76,21 +66,65 @@ public class EmotionService {
 	
 	@Transactional
 	public Optional<EmotionUser> readEmotion(Long listId, Optional<User> user){
-		Optional<ToDoList> todoList = toDoListRepository.findById(listId);
 
-		if (todoList.get().getProject() != null) {
-			Set<User> users = todoList.get().getProject().getUsers();
-			
-			if (!users.contains(user)) {
-				throw new RuntimeException("해당 이름의 사용자가 프로젝트에 속해있지 않습니다.");
-			}
-		} else {
-			if(todoList.get().getUser() != user.get()) {
-	    		throw new RuntimeException("일치하지 않는 유저입니다.");
-	    	}	    	
-		}
 		Optional<EmotionUser> result = emotionUserRepository.findByListId(listId);
+		return result;
+	}
+	
+	@Transactional
+	public Set<EmotionUser> readAllEmotion(Long listId, Optional<User> user){
+
+		Set<EmotionUser> result = emotionUserRepository.findAllByListId(listId);
+		return result;
+	}
+	
+	@Transactional
+	public Optional<EmotionReply> checkReplyEmotion(Long replyId, EmotionDTO emotionDTO, Optional<User> user) {
+
+		Emotion emotion = emotionRepository.findByName(emotionDTO.getName());
+		if (emotion == null) {
+			throw new RuntimeException("없는 감정표현입니다.");
+		}
+		
+		Optional<Reply> reply = replyRepository.findById(replyId);
+
+		EmotionReply emotionUser = EmotionReply.builder()
+									.user(user.get())
+									.reply(reply.get())
+									.emotion(emotion)
+									.list(reply.get().getList())
+									.build();
+
+	
+		Optional<EmotionReply> findEmotionUser = emotionReplyRepository.findByReplyIdAndUserId(replyId, user.get().getId());
+		
+		if(findEmotionUser.isEmpty()) {
+			emotionReplyRepository.save(emotionUser);			
+		} else if(findEmotionUser.get().getEmotion().getId() != emotion.getId()){
+			findEmotionUser.get().setEmotion(emotion);
+			emotionReplyRepository.save(findEmotionUser.get());
+		} else {
+			emotionReplyRepository.delete(findEmotionUser.get());
+		}
+
+		Optional<EmotionReply> result = emotionReplyRepository.findByReplyIdAndUserId(replyId, user.get().getId());
 		return result.isPresent() ? result : null;
+	}
+	
+	@Transactional
+	public Optional<EmotionReply> readReplyEmotion(Long replyId, Optional<User> user){
+		
+		Optional<EmotionReply> result = emotionReplyRepository.findByReplyIdAndUserId(replyId, user.get().getId());
+		
+		return result.isPresent() ? result : null;
+	}
+	
+	@Transactional
+	public Set<EmotionReply> readReplyAllEmotion(Long replyId, Optional<User> user){
+		
+		Set<EmotionReply> result = emotionReplyRepository.findAllByReplyId(replyId);
+		
+		return result;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -37,8 +39,9 @@ public class ToDoList {
     @Column(name = "list_id")
     private Long id;
     
-    @Column(name = "parent_id")
-    private Long parentId;
+    @ManyToOne
+    @JoinColumn(name = "parent_id")
+    private ToDoList parent;
 
     @NotBlank
     @Size(max = 100)
@@ -62,14 +65,6 @@ public class ToDoList {
     
     @Column(name = "level")
     private Integer level; 
-    
-//    @Column(name = "likeCount")
-//    private Integer likeCount;
-    
-//    @NotBlank
-//    @Size(max = 20)
-//    @Column(name = "category")
-//    private String category;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

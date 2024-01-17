@@ -28,14 +28,14 @@ public class LikeController {
 	
 	@PostMapping("/like/check")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<ToDoList> createProject(@RequestBody ListIdDTO listIdDTO) {
+	public ResponseEntity<ToDoList> checkLike(@RequestBody ListIdDTO listIdDTO) {
 				
 		return ResponseEntity.ok(likeService.checkLike(listIdDTO.getListId(), userService.getMyUserWithAuthorities()));
 	}
 	
 	@GetMapping("/like/check/{listId}")
 	@PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-	public ResponseEntity<Set<User>> createProject(@PathVariable Long listId) {
+	public ResponseEntity<Set<User>> checkLike(@PathVariable Long listId) {
 				
 		return ResponseEntity.ok(likeService.readLike(listId, userService.getMyUserWithAuthorities()));
 	}

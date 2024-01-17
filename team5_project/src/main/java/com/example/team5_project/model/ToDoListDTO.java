@@ -1,8 +1,9 @@
 package com.example.team5_project.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +24,9 @@ public class ToDoListDTO {
 
     private String listDesc;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date endDate;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(iso = ISO.DATE_TIME)
+    private LocalDateTime endDate;
     
     private Boolean isCommpleted;
     

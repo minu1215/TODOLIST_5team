@@ -3,6 +3,7 @@ package com.example.team5_project.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,16 +37,4 @@ public class Project {
     @Size(max = 100)
     @Column(name = "projectName")
     private String projectName;
-
-//    @NotBlank
-//    @Size(max = 100)
-//    @Column(name = "email")
-//    private String email;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "PROJECT_USER",
-            joinColumns = @JoinColumn(name = "project_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users = new HashSet<>();
-
 }
